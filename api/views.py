@@ -2,25 +2,29 @@ from rest_framework import mixins
 from rest_framework import generics
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import MultiPartParser, FormParser
+
 
 from api.models import Food, Order
 from api.serializers import FoodSerializer, OrderSerializer
 
 # Create your views here.
 
+
 class FoodList(mixins.ListModelMixin,
-                  generics.GenericAPIView):
+               generics.GenericAPIView):
     queryset = Food.objects.all()
     serializer_class = FoodSerializer
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
-    
+
 
 class FoodCreation(mixins.CreateModelMixin,
-                generics.GenericAPIView):
-    
-    authentication_classes = (TokenAuthentication, SessionAuthentication, BasicAuthentication,)
+                   generics.GenericAPIView):
+
+    authentication_classes = (
+        TokenAuthentication, SessionAuthentication, BasicAuthentication,)
     permission_classes = (IsAuthenticated,)
     queryset = Food.objects.all()
     serializer_class = FoodSerializer
@@ -30,9 +34,9 @@ class FoodCreation(mixins.CreateModelMixin,
 
 
 class FoodDetails(mixins.RetrieveModelMixin,
-                    mixins.UpdateModelMixin,
-                    mixins.DestroyModelMixin,
-                    generics.GenericAPIView):
+                  mixins.UpdateModelMixin,
+                  mixins.DestroyModelMixin,
+                  generics.GenericAPIView):
     queryset = Food.objects.all()
     serializer_class = FoodSerializer
 
@@ -43,11 +47,11 @@ class FoodDetails(mixins.RetrieveModelMixin,
         return self.update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs) 
+        return self.destroy(request, *args, **kwargs)
 
 
 class OrderList(mixins.ListModelMixin,
-                  generics.GenericAPIView):
+                generics.GenericAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
@@ -56,7 +60,13 @@ class OrderList(mixins.ListModelMixin,
 
 
 class OrderCreation(mixins.CreateModelMixin,
-                generics.GenericAPIView):
+                    generics.GenericAPIView):
+    authentication_classes = (
+        TokenAuthentication, SessionAuthentication, BasicAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    parser_classes = (MultiPartParser, FormParser,)
+
+
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
@@ -66,9 +76,13 @@ class OrderCreation(mixins.CreateModelMixin,
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
 
+
 class OrderDetails(generics.ListAPIView,
-                    generics.UpdateAPIView,
-                    generics.DestroyAPIView):
+                   generics.UpdateAPIView,
+                   generics.DestroyAPIView):
+    authentication_classes = (
+        TokenAuthentication, SessionAuthentication, BasicAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     queryset = Order.objects.all()
     serializer_class = OrderSerializer

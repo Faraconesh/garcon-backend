@@ -8,6 +8,8 @@ class FoodSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
+    foods = FoodSerializer(many=True, read_only=True)
+
     class Meta:
         model = Order
-        exclude = ('user',)
+        fields = 'foods', 'submitDateTime', 'orderDateTime', 'details'
