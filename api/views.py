@@ -1,12 +1,12 @@
 from rest_framework import mixins
 from rest_framework import generics
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.parsers import MultiPartParser, FormParser
 
 
 from api.models import Food, Order
-from api.serializers import FoodSerializer, OrderSerializer
+from api.serializers import FoodSerializer, OrderSerializer, AdminOrderSerializer
 
 # Create your views here.
 
@@ -53,7 +53,7 @@ class FoodDetails(mixins.RetrieveModelMixin,
 class OrderList(mixins.ListModelMixin,
                 generics.GenericAPIView):
     queryset = Order.objects.all()
-    serializer_class = OrderSerializer
+    serializer_class = AdminOrderSerializer
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
@@ -64,8 +64,6 @@ class OrderCreation(mixins.CreateModelMixin,
     authentication_classes = (
         TokenAuthentication, SessionAuthentication, BasicAuthentication,)
     permission_classes = (IsAuthenticated,)
-    parser_classes = (MultiPartParser, FormParser,)
-
 
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
@@ -82,7 +80,7 @@ class OrderDetails(generics.ListAPIView,
                    generics.DestroyAPIView):
     authentication_classes = (
         TokenAuthentication, SessionAuthentication, BasicAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsAdminUser)
 
     queryset = Order.objects.all()
-    serializer_class = OrderSerializer
+    serializer_class = AdminOrderSerializer
