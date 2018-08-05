@@ -11,11 +11,11 @@ class Food(models.Model):
     price = models.DecimalField(verbose_name=_('Price'), max_digits=10, decimal_places=3)
     details = models.CharField(verbose_name=_('Details'), max_length=500, blank=True, null=True)
 
-    # def __str__(self):
-    #     return self.name
+    def __str__(self):
+        return self.name
 
-    # def __unicode__(self):
-    #     return self.name
+    def __unicode__(self):
+        return self.name
  
 
 class Order(models.Model):
@@ -26,15 +26,10 @@ class Order(models.Model):
     orderDateTime  = models.DateTimeField(verbose_name=_('Order date time'), auto_now_add=True)
     details = models.CharField(verbose_name=_('Details'),  max_length=500, null=True)
 
-    # def get_full_name(self):
-    #     return self.user.name
+    def __str__(self):
+        print(self.user)
+        return str(self.user) + ' ' + str(self.orderDateTime)
 
-    # def get_short_name(self):
-    #     return self.user.name
-
-    # def __str__(self):
-    #     return self.user.name
-
-    # def __unicode__(self):
-    #     return self.user.name
+    def __unicode__(self):
+        return str(self.user) + ' ' + str(self.orderDateTime)
     
