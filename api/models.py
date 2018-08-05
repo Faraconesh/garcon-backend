@@ -24,7 +24,7 @@ class Order(models.Model):
     status = models.NullBooleanField(verbose_name=_('Finished'), default=False, blank=True)
     submitDateTime = models.DateTimeField(verbose_name=_('Submit date time'), auto_now_add=True)
     orderDateTime  = models.DateTimeField(verbose_name=_('Order date time'), auto_now_add=True)
-    details = models.CharField(verbose_name=_('Details'),  max_length=500, null=True)
+    details = models.CharField(verbose_name=_('Details'),  max_length=500, blank=True, null=True)
 
     def __str__(self):
         print(self.user)
