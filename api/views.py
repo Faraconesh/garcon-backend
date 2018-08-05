@@ -80,7 +80,7 @@ class OrderDetails(generics.ListAPIView,
                    generics.DestroyAPIView):
     authentication_classes = (
         TokenAuthentication, SessionAuthentication, BasicAuthentication,)
-    permission_classes = (IsAuthenticated, IsAdminUser)
+    permission_classes = (IsAdminUser,)
 
     queryset = Order.objects.all()
     serializer_class = AdminOrderSerializer
