@@ -27,7 +27,6 @@ class Order(models.Model):
     details = models.CharField(verbose_name=_('Details'),  max_length=500, blank=True, null=True)
 
     def __str__(self):
-        print(self.user)
         return str(self.user) + ' ' + str(self.orderDateTime)
 
     def __unicode__(self):
