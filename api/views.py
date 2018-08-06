@@ -53,7 +53,7 @@ class FoodDetails(mixins.RetrieveModelMixin,
 class OrderList(mixins.ListModelMixin,
                 generics.GenericAPIView):
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAdminUser,)
+    permission_classes = (IsAuthenticated,)
     queryset = Order.objects.all()
     serializer_class = AdminOrderSerializer
 
