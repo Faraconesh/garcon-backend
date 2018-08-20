@@ -1,5 +1,5 @@
 from django.contrib import admin
-from api.models import Food, Order
+from api.models import Restaurant, Category, Comment, Food, Order
 # Register your models here.
-customModel = [Food, Order]  # iterable list
+customModel = [Restaurant, Category, Comment, Food, Order]  # iterable list
 admin.site.register(customModel)

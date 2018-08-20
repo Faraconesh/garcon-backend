@@ -1,11 +1,35 @@
 from rest_framework import serializers
-from api.models import Food, Order
+from api.models import Category, Restaurant, Comment, Food, Order
 from datetime import datetime
 from django.utils import timezone
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'
+
+
+class RestaurantSerializer(serializers.ModelSerializer):
+    categories = serializers.SerializerMethodField('get_categories_list')
+
+    def get_categories_list(self, instance):
+        return Category.objects.filter(id=instance.id).values_list('title', flat=True)
+
+    class Meta:
+        model = Restaurant
+        fields = '__all__'
+
 
 class FoodSerializer(serializers.ModelSerializer):
     class Meta:
         model = Food
+        fields = '__all__'
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
         fields = '__all__'
 
 
@@ -18,16 +42,6 @@ class OrderSerializer(serializers.ModelSerializer):
 class AdminOrderSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
     food = serializers.SlugRelatedField(slug_field="name", read_only=True, many=True)
-    # orderDateTime = serializers.SerializerMethodField()
-
-    # def get_orderDateTime(self, product):
-    #     # today = datetime.today()
-    #     today = datetime.now(tz=timezone.utc)
-    #     tomorrow = datetime.now(tz=timezone.utc)
-    #     # tomorrow = datetime.today() 
-    #     qs = Order.objects.filter(orderDateTime__range=(today, tomorrow))
-    #     serializer = OrderSerializer(instance=qs, many=True)
-    #     return serializer.data
 
     class Meta:
         model = Order

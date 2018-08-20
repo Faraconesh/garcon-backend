@@ -4,11 +4,20 @@ from rest_framework.authentication import TokenAuthentication, SessionAuthentica
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.parsers import MultiPartParser, FormParser
 
+from django.db.models import Prefetch
 
-from api.models import Food, Order
-from api.serializers import FoodSerializer, OrderSerializer, AdminOrderSerializer
+from api.models import Restaurant, Food, Order
+from api.serializers import RestaurantSerializer, FoodSerializer, OrderSerializer, AdminOrderSerializer
 
 # Create your views here.
+
+class RestaurantList(mixins.ListModelMixin,
+                    generics.GenericAPIView):
+    queryset = Restaurant.objects.all()
+    serializer_class = RestaurantSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
 
 class FoodList(mixins.ListModelMixin,
