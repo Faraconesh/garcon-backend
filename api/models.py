@@ -21,6 +21,9 @@ class Category(models.Model):
 class Restaurant(models.Model):
     name = models.CharField(verbose_name=_('Restaurant name'), max_length=75, help_text=_('Maximum 75 characters'))
     picture = models.FileField(blank=True, null=True)
+    menuPicture = models.FileField(blank=True, null=True)
+    userWeight = models.PositiveIntegerField(verbose_name=_('User Weight'), blank=True, null=True)
+    customWeight = models.PositiveIntegerField(verbose_name=_('Custom Weight'), blank=True, null=True)
     # categories = models.ManyToManyField(Category, related_name=_('RestaurantCategory'))
         
     def __str__(self):
@@ -35,8 +38,9 @@ class Food(models.Model):
     name = models.CharField(verbose_name=_('Food name'), max_length=75, help_text=_('Maximum 75 characters'))
     picture = models.FileField(blank=True, null=True)
     price = models.PositiveIntegerField(verbose_name=_('Price'))
-    categories = models.ManyToManyField(Category, related_name=_('FoodCategory'))
-    weight = models.PositiveIntegerField(verbose_name=_('Weight'))
+    categories = models.ManyToManyField(Category, related_name=_('FoodCategory'), blank=True)
+    userWeight = models.PositiveIntegerField(verbose_name=_('User Weight'), blank=True, null=True)
+    customWeight = models.PositiveIntegerField(verbose_name=_('Custom Weight'), blank=True, null=True)
     details = models.TextField(verbose_name=_('Details'),  max_length=1000, help_text=_('Maximum 1000 characters'), blank=True, null=True)
 
     def __str__(self):
@@ -57,6 +61,7 @@ class Comment(models.Model):
 
     def __unicode__(self):
         return str(self.user.username) + ' said about ' + str(self.food.name)
+
 
 class Order(models.Model):
     user = models.ForeignKey(User, related_name=_('UserOrder'), on_delete=models.CASCADE)

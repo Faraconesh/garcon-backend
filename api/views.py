@@ -3,6 +3,7 @@ from rest_framework import generics
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.filters import OrderingFilter
 
 from django.db.models import Prefetch
 
@@ -14,6 +15,8 @@ from api.serializers import RestaurantSerializer, FoodSerializer, OrderSerialize
 class RestaurantList(mixins.ListModelMixin,
                     generics.GenericAPIView):
     queryset = Restaurant.objects.all()
+    filter_backends = (OrderingFilter,)
+    ordering_fields = ('userWeight', 'customWeight',)
     serializer_class = RestaurantSerializer
 
     def get(self, request, *args, **kwargs):
@@ -23,6 +26,8 @@ class RestaurantList(mixins.ListModelMixin,
 class FoodList(mixins.ListModelMixin,
                generics.GenericAPIView):
     queryset = Food.objects.all()
+    filter_backends = (OrderingFilter,)
+    ordering_fields = ('userWeight', 'customWeight',)
     serializer_class = FoodSerializer
 
     def get(self, request, *args, **kwargs):
@@ -64,6 +69,8 @@ class OrderList(mixins.ListModelMixin,
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     queryset = Order.objects.all()
+    filter_backends = (OrderingFilter,)
+    ordering_fields = ('submitDateTime', 'orderDateTime', 'id')
     serializer_class = AdminOrderSerializer
 
     def get(self, request, *args, **kwargs):

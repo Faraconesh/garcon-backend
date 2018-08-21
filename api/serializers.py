@@ -11,10 +11,6 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class RestaurantSerializer(serializers.ModelSerializer):
-    categories = serializers.SerializerMethodField('get_categories_list')
-
-    def get_categories_list(self, instance):
-        return Category.objects.filter(id=instance.id).values_list('title', flat=True)
 
     class Meta:
         model = Restaurant
@@ -22,6 +18,9 @@ class RestaurantSerializer(serializers.ModelSerializer):
 
 
 class FoodSerializer(serializers.ModelSerializer):
+    categories = serializers.SlugRelatedField(slug_field="title", read_only=True, many=True)
+    restaurant = serializers.ReadOnlyField(source='restaurant.name')
+
     class Meta:
         model = Food
         fields = '__all__'
