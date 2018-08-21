@@ -21,7 +21,7 @@ class Category(models.Model):
 class Restaurant(models.Model):
     name = models.CharField(verbose_name=_('Restaurant name'), max_length=75, help_text=_('Maximum 75 characters'))
     picture = models.FileField(blank=True, null=True)
-    categories = models.ManyToManyField(Category, related_name=_('RestaurantCategory'))
+    # categories = models.ManyToManyField(Category, related_name=_('RestaurantCategory'))
         
     def __str__(self):
         return self.name
@@ -36,6 +36,7 @@ class Food(models.Model):
     picture = models.FileField(blank=True, null=True)
     price = models.PositiveIntegerField(verbose_name=_('Price'))
     categories = models.ManyToManyField(Category, related_name=_('FoodCategory'))
+    weight = models.PositiveIntegerField(verbose_name=_('Weight'))
     details = models.TextField(verbose_name=_('Details'),  max_length=1000, help_text=_('Maximum 1000 characters'), blank=True, null=True)
 
     def __str__(self):
