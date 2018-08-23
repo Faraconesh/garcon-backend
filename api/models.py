@@ -25,7 +25,7 @@ class Restaurant(models.Model):
     name = models.CharField(verbose_name=_('Restaurant name'), max_length=75, help_text=_('Maximum 75 characters'))
     picture = models.FileField(upload_to='Restaurants/', blank=True, null=True)
     menuPicture = models.FileField(upload_to='Restaurants/', blank=True, null=True)
-    userWeight = models.PositiveIntegerField(verbose_name=_('User Weight'), blank=True, null=True)
+    userWeight = models.PositiveIntegerField(verbose_name=_('User Weight'), default=0, blank=True, null=True)
     customWeight = models.PositiveIntegerField(verbose_name=_('Custom Weight'), blank=True, null=True)
     # categories = models.ManyToManyField(Category, related_name=_('RestaurantCategory'))
         
@@ -42,7 +42,7 @@ class Food(models.Model):
     picture = models.FileField(upload_to='Foods/', blank=True, null=True)
     price = models.PositiveIntegerField(verbose_name=_('Price'))
     categories = models.ManyToManyField(Category, related_name=_('FoodCategory'), blank=True)
-    userWeight = models.PositiveIntegerField(verbose_name=_('User Weight'), blank=True, null=True)
+    userWeight = models.PositiveIntegerField(verbose_name=_('User Weight'), default=0, blank=True, null=True)
     customWeight = models.PositiveIntegerField(verbose_name=_('Custom Weight'), blank=True, null=True)
     details = models.TextField(verbose_name=_('Details'),  max_length=1000, help_text=_('Maximum 1000 characters'), blank=True, null=True)
 
