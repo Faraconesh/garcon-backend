@@ -40,8 +40,9 @@ class OrderSerializer(serializers.ModelSerializer):
 
 class AdminOrderSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
-    food = serializers.SlugRelatedField(slug_field="name", read_only=True, many=True)
+    food = FoodSerializer(many=True)
 
     class Meta:
         model = Order
         fields = '__all__'
+        depth = 1

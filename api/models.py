@@ -3,9 +3,12 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
+from datetime import datetime
+
 # Create your models here.
 class Category(models.Model):
     title = models.CharField(verbose_name=_('Title'), max_length=75, help_text=_('Maximum 75 characters'))
+    picture = models.FileField(upload_to='Categories/', blank=True, null=True)
         
     class Meta:
         verbose_name = 'Category'
@@ -20,8 +23,8 @@ class Category(models.Model):
 
 class Restaurant(models.Model):
     name = models.CharField(verbose_name=_('Restaurant name'), max_length=75, help_text=_('Maximum 75 characters'))
-    picture = models.FileField(blank=True, null=True)
-    menuPicture = models.FileField(blank=True, null=True)
+    picture = models.FileField(upload_to='Restaurants/', blank=True, null=True)
+    menuPicture = models.FileField(upload_to='Restaurants/', blank=True, null=True)
     userWeight = models.PositiveIntegerField(verbose_name=_('User Weight'), blank=True, null=True)
     customWeight = models.PositiveIntegerField(verbose_name=_('Custom Weight'), blank=True, null=True)
     # categories = models.ManyToManyField(Category, related_name=_('RestaurantCategory'))
@@ -36,7 +39,7 @@ class Restaurant(models.Model):
 class Food(models.Model):
     restaurant = models.ForeignKey(Restaurant, related_name=_('RestaurantFood'), on_delete=models.CASCADE)
     name = models.CharField(verbose_name=_('Food name'), max_length=75, help_text=_('Maximum 75 characters'))
-    picture = models.FileField(blank=True, null=True)
+    picture = models.FileField(upload_to='Foods/', blank=True, null=True)
     price = models.PositiveIntegerField(verbose_name=_('Price'))
     categories = models.ManyToManyField(Category, related_name=_('FoodCategory'), blank=True)
     userWeight = models.PositiveIntegerField(verbose_name=_('User Weight'), blank=True, null=True)
@@ -68,7 +71,7 @@ class Order(models.Model):
     food = models.ManyToManyField(Food, related_name=_('Food'))
     status = models.NullBooleanField(verbose_name=_('Status'), default=False, blank=True)
     submitDateTime = models.DateTimeField(verbose_name=_('Submit date time'), auto_now_add=True)
-    orderDateTime  = models.DateTimeField(verbose_name=_('Order date time'), auto_now_add=True)
+    orderDateTime  = models.DateField(verbose_name=_('Order date time'), default=datetime.now, blank=True)
     details = models.TextField(verbose_name=_('Details'),  max_length=1000, help_text=_('Maximum 1000 characters'), blank=True, null=True)
 
     def __str__(self):
