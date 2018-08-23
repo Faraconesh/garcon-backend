@@ -1,5 +1,5 @@
 from django.urls import path, include
-from api.views import RestaurantList, FoodList, FoodDetails, FoodCreation, OrderList, OrderDetails, OrderCreation
+from api.views import RestaurantList, FoodList, FoodDetails, FoodCreation, OrderCreation, OrderList, UserOrderList, OrderDetails, UserOrderDetails
 
 urlpatterns = [
     path('accounts/', include('rest_auth.urls')),
@@ -8,7 +8,9 @@ urlpatterns = [
     path('foodList', FoodList.as_view(), name='Food List'),
     path('foodCreation', FoodCreation.as_view(), name='Food Creation'),
     path('foodDetails/<int:pk>', FoodDetails.as_view(), name='Food Details'),
-    path('orderList', OrderList.as_view(), name='Order List'),
     path('orderCreation', OrderCreation.as_view(), name='Order Creation'),
+    path('orderList', OrderList.as_view(), name='Order List'),
+    path('myOrderList', UserOrderList.as_view(), name='User Order List'),
     path('orderDetails/<int:pk>', OrderDetails.as_view(), name='Order Details'),
+    path('myOrderDetails/<int:pk>', UserOrderDetails.as_view(), name='User Order List'),
 ]

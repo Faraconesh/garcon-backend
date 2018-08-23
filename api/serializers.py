@@ -1,8 +1,13 @@
 from rest_framework import serializers
+from django.contrib.auth.models import User
 from api.models import Category, Restaurant, Comment, Food, Order
 from datetime import datetime
 from django.utils import timezone
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -40,9 +45,8 @@ class OrderSerializer(serializers.ModelSerializer):
 
 class AdminOrderSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
-    food = FoodSerializer(many=True)
+    food = FoodSerializer(many=True, read_only=True)
 
     class Meta:
         model = Order
         fields = '__all__'
-        depth = 1

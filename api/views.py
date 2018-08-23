@@ -76,6 +76,21 @@ class OrderList(mixins.ListModelMixin,
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
+class UserOrderList(mixins.ListModelMixin,
+                generics.GenericAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    queryset = Order.objects.all()
+    filter_backends = (OrderingFilter,)
+    ordering_fields = ('submitDateTime', 'orderDateTime', 'id')
+    serializer_class = AdminOrderSerializer
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user)
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
 
 class OrderCreation(mixins.CreateModelMixin,
                     generics.GenericAPIView):
@@ -101,3 +116,26 @@ class OrderDetails(generics.ListAPIView,
 
     queryset = Order.objects.all()
     serializer_class = AdminOrderSerializer
+
+class UserOrderDetails(mixins.RetrieveModelMixin,
+                   generics.UpdateAPIView,
+                   generics.DestroyAPIView,
+                   generics.GenericAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    queryset = Order.objects.all()
+    filter_backends = (OrderingFilter,)
+    ordering_fields = ('submitDateTime', 'orderDateTime', 'id')
+    serializer_class = OrderSerializer
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user)
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)

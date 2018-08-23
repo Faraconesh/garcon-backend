@@ -71,7 +71,7 @@ class Order(models.Model):
     food = models.ManyToManyField(Food, related_name=_('Food'))
     status = models.NullBooleanField(verbose_name=_('Status'), default=False, blank=True)
     submitDateTime = models.DateTimeField(verbose_name=_('Submit date time'), auto_now_add=True)
-    orderDateTime  = models.DateField(verbose_name=_('Order date time'), default=datetime.now, blank=True)
+    orderDateTime  = models.DateField(verbose_name=_('Order date time'), default=datetime.today().strftime('%Y-%m-%d'), blank=True)
     details = models.TextField(verbose_name=_('Details'),  max_length=1000, help_text=_('Maximum 1000 characters'), blank=True, null=True)
 
     def __str__(self):
