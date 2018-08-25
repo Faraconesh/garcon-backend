@@ -1,10 +1,11 @@
 from django.urls import path, include
-from api.views import RestaurantList, FoodList, FoodDetails, FoodCreation, OrderCreation, OrderList, UserOrderList, OrderDetails, UserOrderDetails
+from api.views import RestaurantList, CategoryList, FoodList, FoodDetails, FoodCreation, OrderCreation, OrderList, UserOrderList, OrderDetails, UserOrderDetails
 
 urlpatterns = [
     path('accounts/', include('rest_auth.urls')),
     path('accounts/registration', include('rest_auth.registration.urls')),
     path('restaurantList', RestaurantList.as_view(), name='Restaurant List'),
+    path('categoryList', CategoryList.as_view(), name='Category List'),
     path('foodList', FoodList.as_view(), name='Food List'),
     path('foodCreation', FoodCreation.as_view(), name='Food Creation'),
     path('foodDetails/<int:pk>', FoodDetails.as_view(), name='Food Details'),

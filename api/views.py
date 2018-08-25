@@ -7,8 +7,8 @@ from rest_framework.filters import OrderingFilter
 
 from django.db.models import Prefetch
 
-from api.models import Restaurant, Food, Order
-from api.serializers import RestaurantSerializer, FoodSerializer, OrderSerializer, AdminOrderSerializer
+from api.models import Restaurant, Category, Food, Order
+from api.serializers import RestaurantSerializer, CategorySerializer, FoodSerializer, OrderSerializer, AdminOrderSerializer
 
 # Create your views here.
 
@@ -18,6 +18,15 @@ class RestaurantList(mixins.ListModelMixin,
     filter_backends = (OrderingFilter,)
     ordering_fields = ('userWeight', 'customWeight',)
     serializer_class = RestaurantSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+
+class CategoryList(mixins.ListModelMixin,
+                    generics.GenericAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
@@ -139,3 +148,15 @@ class UserOrderDetails(mixins.RetrieveModelMixin,
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+
+    def perform_destroy(self, instance):
+        order = Order.objects.filter(id=instance.id).first()
+        food = order.food
+        order_count = food.values('userWeight').first()['userWeight']
+        food.update(userWeight=order_count-1)
+        restaurant_id = food.values('restaurant').first()['restaurant']
+        restaurant_instance = Restaurant.objects.filter(id=restaurant_id)
+        restaurant_count = restaurant_instance.values('userWeight').first()['userWeight']
+        restaurant_instance.update(userWeight=restaurant_count-1)
+        restaurant_count = restaurant_instance.values('userWeight').first()['userWeight']
+        instance.delete()

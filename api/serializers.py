@@ -9,6 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -38,6 +39,18 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
+
+    def create(self, validated_data):
+        food = validated_data.pop('food')[0]
+        order = Order.objects.create(**validated_data)
+        order_count = Food.objects.filter(id=food.id).values('userWeight').first()['userWeight']
+        food.userWeight = order_count+1
+        food.save()
+        restaurant =  Restaurant.objects.filter(name=food.restaurant)
+        restaurant_count = restaurant.values('userWeight').first()['userWeight']
+        restaurant.update(userWeight=restaurant_count+1)
+        order.food.add(food)
+        return order
 
     class Meta:
         model = Order
