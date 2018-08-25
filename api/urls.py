@@ -4,9 +4,9 @@ from api.views import RestaurantList, CategoryList, FoodList, FoodDetails, FoodC
 urlpatterns = [
     path('accounts/', include('rest_auth.urls')),
     path('accounts/registration/', include('rest_auth.registration.urls')),
-    re_path(r'password-reset/confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-        TemplateView.as_view(template_name="password_reset_confirm.html"),
-        name='password_reset_confirm'),
+    #re_path(r'password-reset/confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+    #TemplateView.as_view(template_name="password_reset_confirm.html"),
+    #name='password_reset_confirm'),
     path('restaurantList', RestaurantList.as_view(), name='Restaurant List'),
     path('categoryList', CategoryList.as_view(), name='Category List'),
     path('foodList', FoodList.as_view(), name='Food List'),
