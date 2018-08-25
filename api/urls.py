@@ -1,11 +1,5 @@
-<<<<<<< HEAD
-from django.urls import path, include
-from api.views import RestaurantList, CategoryList, FoodList, FoodDetails, FoodCreation, OrderCreation, OrderList, UserOrderList, OrderDetails, UserOrderDetails
-=======
 from django.urls import path, include, re_path
-from api.views import RestaurantList, FoodList, FoodDetails, FoodCreation, OrderCreation, OrderList, UserOrderList, OrderDetails, UserOrderDetails
-from django.views.generic import TemplateView
->>>>>>> 0530b30b1bb54743bbcf4bf7781ea2cc675adaa4
+from api.views import RestaurantList, CategoryList, FoodList, FoodDetails, FoodCreation, OrderCreation, OrderList, UserOrderList, OrderDetails, UserOrderDetails
 
 urlpatterns = [
     path('accounts/', include('rest_auth.urls')),
